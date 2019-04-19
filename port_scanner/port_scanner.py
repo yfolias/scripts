@@ -92,4 +92,8 @@ for i in range(len(ports)):
     s.close()
 
 
-print("\r\nIf the outcome is not satisfactory enough, please follow steps below:\r\n- Run a full port scan\r\n- Run a udp scan\r\n- Run a network scan (tcpdump/wireshark)\r\n- Stay calm, it's there")
+print("\r\nIf the outcome is not satisfactory enough, please follow steps below:"
+      "\r\n- Run a full port scan"
+      "\r\n- Run a udp scan"
+      "\r\n- Run a network scan (tcpdump/wireshark)"
+      "\r\n- Stay calm, it's there")
