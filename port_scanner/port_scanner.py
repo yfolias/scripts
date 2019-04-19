@@ -7,7 +7,7 @@ import socket
 import requests
 import threading
 import time
-import os
+import logging
 
 ports= [
     {"port": 21, "description": "FTP Server", "hints": "- run nmap -V \r\n- Try to connect anonymously"},
@@ -35,6 +35,7 @@ ports= [
     {"port": 993, "description": "IMAP Over SSL", "hints": ""},
     {"port": 995, "description": "POP3 Over SSL", "hints": ""},
     {"port": 1099, "description": "Java RMI Registry", "hints": ""},
+    {"port": 1433, "description": "MS SQL", "hints": ""},
     {"port": 1521, "description": "Oracle Server", "hints": ""},
     {"port": 2030, "description": "Centos Web Panel", "hints": ""},
     {"port": 2100, "description": "Oracle FTP", "hints": ""},
@@ -57,14 +58,23 @@ target_ip=input("Provide target ip: ")
 def get_header(url):
     res = requests.get(url)
     print(res.headers['Server'])
+    logging.info(res.headers['Server'])
 
 def portScan(port):
+    log_file = ("%s_log" % target_ip)
+    logging.basicConfig(filename=log_file,
+                        filemode='a',
+                        format='%(asctime)s %(levelname)s %(message)s',
+                        datefmt='%H:%M:%S',
+                        level=logging.DEBUG)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(2)
+
     conn = s.connect_ex((target_ip, port['port']))
-    #print("Scanning %s" % port['port'])
     if conn == 0:
-        print("Port %s is open" % port['port'])
+        msg2=("Port %s is open" % port['port'])
+        logging.warning(msg2)
+        print(msg2)
         if port['hints']!="":
             print(port['hints'])
         if port['port']==80:
@@ -97,7 +107,7 @@ for port in ports:
     t = threading.Thread(target=portScan, args=(port, ))
     t.start()
 
-time.sleep(5)
+time.sleep(2)
 print("\r\nIf the outcome is not satisfactory enough, please follow steps below:"
       "\r\n- Run a full port scan"
       "\r\n- Run a udp scan"
