@@ -39,13 +39,17 @@ ports= [
     {"port": 1521, "description": "Oracle Server", "hints": ""},
     {"port": 2030, "description": "Centos Web Panel", "hints": ""},
     {"port": 2100, "description": "Oracle FTP", "hints": ""},
+    {"port": 2049, "description": "NFS", "hints": ""},
     {"port": 3268, "description": "LDAP Port", "hints": ""},
     {"port": 3269, "description": "LDAP over SSL", "hints": ""},
     {"port": 3306, "description": "Mysql Server", "hints": ""},
     {"port": 3389, "description": "RDP", "hints": ""},
     {"port": 5000, "description": "Flask default port", "hints": ""},
+    {"port": 5432, "description": "Postgresql", "hints": ""},
+    {"port": 5433, "description": "Postgresql", "hints": ""},
     {"port": 7778, "description": "Oracle App Server", "hints": ""},
     {"port": 8080, "description": "Tomcat Web Server", "hints": ""},
+    {"port": 8081, "description": "Web Server", "hints": ""},
     {"port": 8443, "description": "Tomcat running over SSL", "hints": ""},
     {"port": 9050, "description": "TOR Socks", "hints": ""},
     {"port": 10000, "description": "Webmin", "hints": ""},
@@ -112,4 +116,5 @@ print("\r\nIf the outcome is not satisfactory enough, please follow steps below:
       "\r\n- Run a full port scan"
       "\r\n- Run a udp scan"
       "\r\n- Run a network scan (tcpdump/wireshark)"
+      "\r\n- Google is your friend"
       "\r\n- Stay calm, it's there")
