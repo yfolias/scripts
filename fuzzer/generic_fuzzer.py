@@ -13,5 +13,6 @@ for i in range(100):
         s.connect((target_ip, int(target_port)))
         payload=int(i)*("A"*100)
         print("Sending %s of As" % len(payload))
+        s.close()
     except:
         print("Fuzzer failed")
