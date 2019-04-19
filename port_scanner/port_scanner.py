@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # Yannis Folias
-# Python port scanner
+# Multithreaded python port scanner
 # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 
 import socket
 import requests
-import sys
+import threading
 import time
 import os
 
@@ -42,6 +42,7 @@ ports= [
     {"port": 3269, "description": "LDAP over SSL", "hints": ""},
     {"port": 3306, "description": "Mysql Server", "hints": ""},
     {"port": 3389, "description": "RDP", "hints": ""},
+    {"port": 5000, "description": "Flask default port", "hints": ""},
     {"port": 7778, "description": "Oracle App Server", "hints": ""},
     {"port": 8080, "description": "Tomcat Web Server", "hints": ""},
     {"port": 8443, "description": "Tomcat running over SSL", "hints": ""},
@@ -57,33 +58,34 @@ def get_header(url):
     res = requests.get(url)
     print(res.headers['Server'])
 
-for i in range(len(ports)):
+def portScan(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(2)
-    conn = s.connect_ex((target_ip, ports[i]['port']))
+    conn = s.connect_ex((target_ip, port['port']))
+    #print("Scanning %s" % port['port'])
     if conn == 0:
-        print("Port %s is open" % ports[i]['port'])
-        if ports[i]['hints']!="":
-            print(ports[i]['hints'])
-        if ports[i]['port']==80:
+        print("Port %s is open" % port['port'])
+        if port['hints']!="":
+            print(port['hints'])
+        if port['port']==80:
             try:
                 url=("http://"+target_ip)
                 get_header(url)
             except:
                 pass
-        elif ports[i]['port']==443:
+        elif port['port']==443:
             try:
                 url=("https://"+target_ip)
                 get_header(url)
             except:
                 pass
-        elif ports[i]['port']==8080:
+        elif port['port']==8080:
             try:
                 url=("http://"+target_ip+":8080")
                 get_header(url)
             except:
                 pass
-        elif ports[i]['port']==8443:
+        elif port['port']==8443:
             try:
                 url = ("https://" + target_ip + ":8443")
                 get_header(url)
@@ -91,7 +93,11 @@ for i in range(len(ports)):
                 pass
     s.close()
 
+for port in ports:
+    t = threading.Thread(target=portScan, args=(port, ))
+    t.start()
 
+time.sleep(5)
 print("\r\nIf the outcome is not satisfactory enough, please follow steps below:"
       "\r\n- Run a full port scan"
       "\r\n- Run a udp scan"
